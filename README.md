@@ -23,6 +23,7 @@ A repository scaffold for the Washday project.
 - [`docs/backlog.md`](docs/backlog.md): Lightweight task tracking
 - [`docs/prototype1-plan.md`](docs/prototype1-plan.md): Plan for the first working prototype
 - [`docs/ux.md`](docs/ux.md): UX decisions and rationale
+- [`docs/code-guidelines.md`](docs/code-guidelines.md): Coding rules and quality guidelines
 - [`docs/planning.md`](docs/planning.md): Delivery plan and MVP completion criteria
 - [`docs/implementation-notes.md`](docs/implementation-notes.md): Platform and implementation notes
 - [`docs/decisions.md`](docs/decisions.md): Architecture and product decisions
