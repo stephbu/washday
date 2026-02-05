@@ -44,6 +44,10 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 ## Constraints
 - Privacy first
 - Data sources to be determined
+  - Alpha Vantage to source Dividend Events?
+
+## Monetization
+- Ad-funded model (TBD: ad placement and privacy constraints)
 
 ## Rules And Assumptions
 - U.S. IRS wash-sale rules are the initial target unless otherwise specified
@@ -55,5 +59,6 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 - Internal Revenue Code §83, property transferred in connection with performance of services
 
 ## External References
-- https://www.irs.gov/publications/p550
-- https://www.irs.gov/irb/2007-31_IRB
+- IRS Publication 550 https://www.irs.gov/publications/p550
+- IRS Code https://www.irs.gov/irb/2007-31_IRB
+- Alpha Vantage API https://www.alphavantage.co/documentation/
