@@ -28,6 +28,10 @@ A repository scaffold for the Washday project.
 - `docs/decisions.md`: Architecture and product decisions
 - `docs/runbook.md`: Operational and release notes
 
+## License
+- Code: PolyForm Noncommercial 1.0.0 (`LICENSE-CODE`)
+- Assets (images/icons/design): CC BY-NC 4.0 (`LICENSE-ASSETS`)
+
 ## Contributing
 - Follow `AGENTS.md` for agentic workflow conventions
 - Keep changes small and documented
