@@ -21,6 +21,7 @@ A repository scaffold for the Washday project.
 - `docs/product-context.md`: Product context and MVP scope
 - `docs/open-questions.md`: Open product questions to resolve
 - `docs/backlog.md`: Lightweight task tracking
+- `docs/prototype1-plan.md`: Plan for the first working prototype
 - `docs/planning.md`: Delivery plan and MVP completion criteria
 - `docs/implementation-notes.md`: Platform and implementation notes
 - `docs/decisions.md`: Architecture and product decisions
