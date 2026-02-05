@@ -3,13 +3,28 @@
 ## One-Liner
 Washday is a simple visual calculator to help employees who receive stock grants and dividends visualize upcoming wash-sale risk windows.
 
+## Problem
+Employees with equity grants and dividends struggle to see how grant, purchase, and dividend dates interact with wash-sale timing rules, which increases the risk of unintended tax consequences.
+
 ## Target Users
 Employees who receive equity grants and dividends and want to understand potential wash-sale timing risks.
+
+## Primary Persona
+An employee with recurring RSU vests and periodic dividends who wants to plan trades without accidentally triggering wash-sale restrictions.
 
 ## User Goals
 - Add and store stock tickers
 - Add and label grant dates and dividend dates
 - Visualize windows where wash-sale rules apply or do not apply
+
+## User Journey
+1. Add a ticker and enter upcoming acquisition events and dividends.
+2. View the calendar with highlighted risk windows and plain-language labels.
+3. Adjust timing plans based on the visualized windows.
+
+## Success Metrics
+- Investor can quickly enter grant dates and schedules.  See risk windows.
+- Investor can visually identify upcoming wash-sale risk windows for the next 90 days within sixty.
 
 ## Definitions
 - Stock grant: IRS language generally treats equity awards as “property transferred in connection with the performance of services” (IRC §83). For Washday, a stock grant is an employer equity award that results in shares becoming the employee’s property at a specific event date. These events are treated as acquisitions for wash-sale timing.
