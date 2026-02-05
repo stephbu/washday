@@ -297,6 +297,11 @@ button.danger {
   font-weight: 600;
 }
 
+.day.today {
+  border-color: rgba(56, 189, 248, 0.8);
+  box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.6);
+}
+
 .day .markers {
   display: flex;
   gap: 0.25rem;

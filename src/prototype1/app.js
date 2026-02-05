@@ -402,6 +402,10 @@ function renderCalendar() {
     const cell = document.createElement("div");
     cell.className = "day";
     cell.setAttribute("aria-label", key);
+    const todayKey = formatDate(new Date());
+    if (key === todayKey) {
+      cell.classList.add("today");
+    }
 
     if (current.getMonth() !== month.getMonth()) {
       cell.classList.add("muted");
