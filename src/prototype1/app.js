@@ -429,6 +429,9 @@ function renderCalendar() {
     if (preCount + postCount > 1) {
       cell.classList.add("overlap");
     }
+    if (preCount + postCount === 0 && current.getMonth() === month.getMonth()) {
+      cell.classList.add("safe");
+    }
 
     const eventsToday = occurrenceMap.get(key) || [];
     cell.innerHTML = `
