@@ -27,6 +27,7 @@ Use a static HTML/CSS/JS app with a lightweight calendar grid and localStorage. 
 - Add acquisition event
 - Add dividend event
 - List of events with inline edit/delete
+- Include vesting schedule selection with quarterly vest option
 
 4. Calendar Rendering
 - Render month grid

@@ -15,6 +15,7 @@ const eventList = document.getElementById("eventList");
 const eventTicker = document.getElementById("eventTicker");
 const eventKind = document.getElementById("eventKind");
 const eventSubtype = document.getElementById("eventSubtype");
+const eventSchedule = document.getElementById("eventSchedule");
 const eventDate = document.getElementById("eventDate");
 const eventLabel = document.getElementById("eventLabel");
 const monthLabel = document.getElementById("monthLabel");
@@ -25,6 +26,44 @@ const nextMonth = document.getElementById("nextMonth");
 const todayBtn = document.getElementById("todayBtn");
 const resetBtn = document.getElementById("resetBtn");
 const exportBtn = document.getElementById("exportBtn");
+
+function addMonths(date, months) {
+  const result = new Date(date);
+  const day = result.getDate();
+  result.setMonth(result.getMonth() + months);
+  if (result.getDate() < day) {
+    result.setDate(0);
+  }
+  return result;
+}
+
+const scheduleGenerators = {
+  "one-time"(startDate) {
+    return [formatDate(startDate)];
+  },
+  quarterly(startDate, currentDate) {
+    return generateRecurringDates(startDate, currentDate, 3, 0);
+  },
+  "1yr-cliff-quarterly"(startDate, currentDate) {
+    return generateRecurringDates(startDate, currentDate, 3, 12);
+  },
+  "4yr-monthly"(startDate, currentDate) {
+    return generateRecurringDates(startDate, currentDate, 1, 0);
+  },
+  "2yr-cliff-annual"(startDate, currentDate) {
+    return generateRecurringDates(startDate, currentDate, 12, 24);
+  },
+};
+
+function generateRecurringDates(startDate, currentDate, intervalMonths, cliffMonths) {
+  const dates = [];
+  let current = addMonths(startDate, cliffMonths);
+  while (current <= currentDate) {
+    dates.push(formatDate(current));
+    current = addMonths(current, intervalMonths);
+  }
+  return dates;
+}
 
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -83,6 +122,7 @@ function addEvent(payload) {
     ticker: payload.ticker,
     kind: payload.kind,
     subtype: payload.subtype || null,
+    schedule: payload.schedule || null,
     date: payload.date,
     label: payload.label || "",
   };
@@ -106,6 +146,17 @@ function deleteEvent(id) {
   saveState();
   renderEvents();
   renderCalendar();
+}
+
+function getEventOccurrences(event, currentDate) {
+  if (event.kind === "div") {
+    return [event.date];
+  }
+  if (!event.schedule || !scheduleGenerators[event.schedule]) {
+    return [event.date];
+  }
+  const startDate = toDate(event.date);
+  return scheduleGenerators[event.schedule](startDate, currentDate);
 }
 
 function renderTickers() {
@@ -163,12 +214,14 @@ function renderEvents() {
       const label = event.label ? `<strong>${event.label}</strong>` : "";
       const kindLabel = event.kind === "div" ? "Dividend" : "Acquisition";
       const subtypeLabel = event.kind === "acq" ? event.subtype : "";
+      const scheduleLabel = event.kind === "acq" ? event.schedule : "";
 
       card.innerHTML = `
         <div class="meta">
           <span>${event.ticker}</span>
           <span>${kindLabel}</span>
           ${subtypeLabel ? `<span>${subtypeLabel}</span>` : ""}
+          ${scheduleLabel ? `<span>${scheduleLabel}</span>` : ""}
           <span>${event.date}</span>
         </div>
         ${label}
@@ -220,6 +273,16 @@ function renderInlineEditor(id) {
       </select>
     </label>
     <label>
+      Schedule
+      <select data-field="schedule">
+        <option value="one-time">One-time event</option>
+        <option value="1yr-cliff-quarterly">1yr cliff + quarterly vest</option>
+        <option value="quarterly">Quarterly vest</option>
+        <option value="4yr-monthly">4yr monthly vest</option>
+        <option value="2yr-cliff-annual">2yr cliff + annual vest</option>
+      </select>
+    </label>
+    <label>
       Date
       <input type="date" data-field="date" required />
     </label>
@@ -241,13 +304,17 @@ function renderInlineEditor(id) {
   card.querySelector("[data-field='ticker']").value = event.ticker;
   card.querySelector("[data-field='kind']").value = event.kind;
   card.querySelector("[data-field='subtype']").value = event.subtype || "rsu";
+  card.querySelector("[data-field='schedule']").value = event.schedule || "one-time";
   card.querySelector("[data-field='date']").value = event.date;
   card.querySelector("[data-field='label']").value = event.label;
 
   const kindSelect = card.querySelector("[data-field='kind']");
   const subtypeSelect = card.querySelector("[data-field='subtype']");
+  const scheduleSelect = card.querySelector("[data-field='schedule']");
   const toggleSubtype = () => {
-    subtypeSelect.disabled = kindSelect.value === "div";
+    const isDividend = kindSelect.value === "div";
+    subtypeSelect.disabled = isDividend;
+    scheduleSelect.disabled = isDividend;
   };
   toggleSubtype();
   kindSelect.addEventListener("change", toggleSubtype);
@@ -257,6 +324,7 @@ function renderInlineEditor(id) {
       ticker: card.querySelector("[data-field='ticker']").value,
       kind: kindSelect.value,
       subtype: kindSelect.value === "div" ? null : subtypeSelect.value,
+      schedule: kindSelect.value === "div" ? null : scheduleSelect.value,
       date: card.querySelector("[data-field='date']").value,
       label: card.querySelector("[data-field='label']").value,
     });
@@ -269,17 +337,21 @@ function renderInlineEditor(id) {
 
 function buildRiskMap() {
   const riskMap = new Map();
+  const currentDate = new Date();
   state.events.forEach((event) => {
-    const base = toDate(event.date);
-    const start = new Date(base);
-    start.setDate(start.getDate() - 30);
-    const end = new Date(base);
-    end.setDate(end.getDate() + 30);
+    const occurrences = getEventOccurrences(event, currentDate);
+    occurrences.forEach((occurrence) => {
+      const base = toDate(occurrence);
+      const start = new Date(base);
+      start.setDate(start.getDate() - 30);
+      const end = new Date(base);
+      end.setDate(end.getDate() + 30);
 
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const key = formatDate(d);
-      riskMap.set(key, (riskMap.get(key) || 0) + 1);
-    }
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const key = formatDate(d);
+        riskMap.set(key, (riskMap.get(key) || 0) + 1);
+      }
+    });
   });
   return riskMap;
 }
@@ -290,6 +362,17 @@ function renderCalendar() {
   const monthStart = new Date(month);
   const monthEnd = new Date(month.getFullYear(), month.getMonth() + 1, 0);
   const riskMap = buildRiskMap();
+  const currentDate = new Date();
+  const occurrenceMap = new Map();
+  state.events.forEach((event) => {
+    const occurrences = getEventOccurrences(event, currentDate);
+    occurrences.forEach((date) => {
+      if (!occurrenceMap.has(date)) {
+        occurrenceMap.set(date, []);
+      }
+      occurrenceMap.get(date).push(event);
+    });
+  });
 
   monthLabel.textContent = month.toLocaleDateString(undefined, {
     month: "long",
@@ -328,7 +411,7 @@ function renderCalendar() {
       cell.classList.add("overlap");
     }
 
-    const eventsToday = state.events.filter((event) => event.date === key);
+    const eventsToday = occurrenceMap.get(key) || [];
     cell.innerHTML = `
       <span class="date">${current.getDate()}</span>
       <div class="markers"></div>
@@ -336,10 +419,14 @@ function renderCalendar() {
 
     const markers = cell.querySelector(".markers");
     eventsToday.forEach((event) => {
-      const dot = document.createElement("span");
-      dot.className = "dot event";
-      dot.title = `${event.ticker} ${event.kind === "div" ? "Dividend" : "Acquisition"}`;
-      markers.appendChild(dot);
+      const badge = document.createElement("span");
+      badge.className = "marker";
+      badge.title = `${event.ticker} ${event.kind === "div" ? "Dividend" : "Acquisition"}`;
+      badge.innerHTML = `
+        <span class="dot event"></span>
+        <span>${event.ticker}</span>
+      `;
+      markers.appendChild(badge);
     });
 
     calendarGrid.appendChild(cell);
@@ -347,7 +434,9 @@ function renderCalendar() {
 }
 
 function handleKindChange() {
-  eventSubtype.disabled = eventKind.value === "div";
+  const isDividend = eventKind.value === "div";
+  eventSubtype.disabled = isDividend;
+  eventSchedule.disabled = isDividend;
 }
 
 function resetAll() {
@@ -395,6 +484,7 @@ eventForm.addEventListener("submit", (e) => {
     ticker: eventTicker.value,
     kind: eventKind.value,
     subtype: eventKind.value === "div" ? null : eventSubtype.value,
+    schedule: eventKind.value === "div" ? null : eventSchedule.value,
     date: eventDate.value,
     label: eventLabel.value.trim(),
   });
