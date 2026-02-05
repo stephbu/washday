@@ -18,9 +18,10 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 - Visualize windows where wash-sale rules apply or do not apply
 
 ## User Journey
-1. Add a ticker and enter upcoming acquisition events and dividends.
-2. View the calendar with highlighted risk windows and plain-language labels.
-3. Adjust timing plans based on the visualized windows.
+1. Starts with a blank calendar and "add grant symbol"
+2. Investor picks symbol, and schedule, it fills in dividends.
+3. View the calendar with highlighted risk windows and plain-language labels.
+4. Adjust timing plans based on the visualized windows.
 
 ## Success Metrics
 - Investor can quickly enter symbol, grant date(s) and vesting schedules.  See quickly see tax risk windows.
