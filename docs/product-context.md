@@ -16,6 +16,7 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 - Add and store stock tickers
 - Add and label grant dates and dividend dates
 - Visualize windows where wash-sale rules apply or do not apply
+- Define multiple vesting schedules per ticker with named schedule types
 
 ## User Journey
 1. Starts with a blank calendar and "add grant symbol"
@@ -30,6 +31,8 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 ## Definitions
 - Stock grant: IRS language generally treats equity awards as “property transferred in connection with the performance of services” (IRC §83). For Washday, a stock grant is an employer equity award that results in shares becoming the employee’s property at a specific event date. These events are treated as acquisitions for wash-sale timing.
 - Grant event types (MVP): RSU vest/settlement dates, ESPP purchase dates, and stock option exercise dates. Vesting schedules are captured as date series only (no quantities or prices for MVP).
+- Vesting schedule: A named series of acquisition dates attached to a ticker (e.g., “1yr cliff + quarterly vest”).
+  Example schedules: “1yr cliff + quarterly vest”, “4yr monthly vest”, “2yr cliff + annual vest”.
 
 ## MVP Scope
 - Add labelled dividend and grant dates to a calendar

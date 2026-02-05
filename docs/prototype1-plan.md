@@ -26,20 +26,24 @@ Use a static HTML/CSS/JS app with a lightweight calendar grid and localStorage. 
 - Add ticker
 - Add acquisition event
 - Add dividend event
-- List of events with edit/delete
+- List of events with inline edit/delete
 
 4. Calendar Rendering
 - Render month grid
 - Show event markers
 - Highlight wash-sale risk windows
+- Handle overlapping windows and same-day events
 
 5. Calculation
 - For each acquisition event, compute wash-sale window (30 days before and after)
-- For dividends, mark a reference date only (no window logic unless later specified)
+- For dividends, compute wash-sale window (30 days before and after)
 
 6. Polish
 - Lightweight disclaimer
 - Basic empty-state copy
+- Inline validation for required fields
+- Basic accessibility (labels, focus, keyboard navigation)
+- Data reset/export for quick iteration
 
 ## Definition of Done
 - User can add and persist events

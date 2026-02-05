@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Washday Prototype 1</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="brand">
+          <div class="brand-mark">W</div>
+          <div>
+            <h1>Washday</h1>
+            <p>Visualize wash-sale risk windows for equity events and dividends.</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="exportBtn" class="ghost">Export JSON</button>
+          <button id="resetBtn" class="danger">Reset</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel">
+          <h2>Tickers</h2>
+          <form id="tickerForm" class="row">
+            <label for="tickerInput">Add ticker</label>
+            <div class="inline">
+              <input id="tickerInput" name="ticker" placeholder="AAPL" maxlength="10" autocomplete="off" />
+              <button type="submit">Add</button>
+            </div>
+          </form>
+          <div id="tickerList" class="chip-list"></div>
+
+          <h2>Add Event</h2>
+          <form id="eventForm" class="stack">
+            <label for="eventTicker">Ticker</label>
+            <select id="eventTicker" name="ticker" required></select>
+
+            <label for="eventKind">Event type</label>
+            <select id="eventKind" name="kind">
+              <option value="acq">Acquisition event</option>
+              <option value="div">Dividend</option>
+            </select>
+
+            <label for="eventSubtype">Acquisition subtype</label>
+            <select id="eventSubtype" name="subtype">
+              <option value="rsu">RSU vest/settle</option>
+              <option value="espp">ESPP purchase</option>
+              <option value="option">Option exercise</option>
+            </select>
+
+            <label for="eventDate">Date</label>
+            <input id="eventDate" name="date" type="date" required />
+
+            <label for="eventLabel">Label (optional)</label>
+            <input id="eventLabel" name="label" placeholder="Q1 vest" />
+
+            <button type="submit" class="primary">Add Event</button>
+          </form>
+
+          <h2>Events</h2>
+          <div id="eventList" class="event-list"></div>
+        </section>
+
+        <section class="calendar">
+          <div class="calendar-header">
+            <div>
+              <h2 id="monthLabel">Month</h2>
+              <p class="muted">Wash-sale window is 30 days before and after each event.</p>
+            </div>
+            <div class="calendar-controls">
+              <button id="prevMonth" class="ghost">Prev</button>
+              <button id="todayBtn" class="ghost">Today</button>
+              <button id="nextMonth" class="ghost">Next</button>
+            </div>
+          </div>
+
+          <div class="legend">
+            <span class="legend-item"><span class="dot event"></span> Event</span>
+            <span class="legend-item"><span class="dot risk"></span> Wash-sale window</span>
+            <span class="legend-item"><span class="dot overlap"></span> Overlapping windows</span>
+          </div>
+
+          <div class="grid" id="calendarGrid" aria-label="Calendar"></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        Informational only. Not tax or legal advice.
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
