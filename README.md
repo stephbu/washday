@@ -3,8 +3,8 @@
 A repository scaffold for the Washday project.
 
 ## Status
-- Early scaffold only
-- No build or runtime defined yet
+- Prototype 1 implemented (static HTML/CSS/JS)
+- No build system or backend
 
 ## Project Goals
 - Define the product and architecture
@@ -12,9 +12,9 @@ A repository scaffold for the Washday project.
 - Capture decisions and references in `docs/`
 
 ## Getting Started
-1. Decide on the language/runtime
-2. Add a minimal entry point
-3. Define how to run and test locally
+1. Open `src/prototype1/index.html` in a browser
+2. Use the left panel to add tickers and events
+3. Navigate months to see warning windows
 
 ## Documentation
 - `docs/overview.md`: Project overview and scope
