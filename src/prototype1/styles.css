@@ -298,8 +298,10 @@ button.danger {
 }
 
 .day.today {
-  border-color: rgba(56, 189, 248, 0.8);
-  box-shadow: inset 0 0 0 2px rgba(56, 189, 248, 0.6);
+  border-color: rgba(56, 189, 248, 1);
+  box-shadow: inset 0 0 0 3px rgba(56, 189, 248, 0.9),
+    0 0 12px rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.08);
 }
 
 .day .markers {

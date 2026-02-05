@@ -37,6 +37,12 @@ function addMonths(date, months) {
   return result;
 }
 
+function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
 const scheduleGenerators = {
   "one-time"(startDate) {
     return [formatDate(startDate)];
@@ -371,7 +377,8 @@ function renderCalendar() {
   gridStart.setDate(gridStart.getDate() - startOffset);
   const gridEnd = new Date(gridStart);
   gridEnd.setDate(gridEnd.getDate() + daysInView - 1);
-  const { preMap, postMap } = buildWarningMaps(gridEnd);
+  const warningHorizon = addDays(gridEnd, 30);
+  const { preMap, postMap } = buildWarningMaps(warningHorizon);
   const occurrenceMap = new Map();
   state.events.forEach((event) => {
     const occurrences = getEventOccurrences(event, gridEnd);
@@ -433,7 +440,11 @@ function renderCalendar() {
     eventsToday.forEach((event) => {
       const badge = document.createElement("span");
       badge.className = "marker";
-      badge.title = `${event.ticker} ${event.kind === "div" ? "Dividend" : "Acquisition"}`;
+      const kindLabel = event.kind === "div" ? "Dividend" : "Acquisition";
+      const subtypeLabel = event.kind === "div" ? "n/a" : event.subtype || "n/a";
+      const labelSegment = event.label ? `/${event.label}` : "";
+      const scheduleLabel = event.kind === "div" ? "one-time" : event.schedule || "one-time";
+      badge.title = `${event.ticker}:${kindLabel}/${subtypeLabel}${labelSegment}/${scheduleLabel}`;
       badge.innerHTML = `
         <span class="dot event"></span>
         <span>${event.ticker}</span>
