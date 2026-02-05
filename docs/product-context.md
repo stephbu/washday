@@ -11,6 +11,10 @@ Employees who receive equity grants and dividends and want to understand potenti
 - Add and label grant dates and dividend dates
 - Visualize windows where wash-sale rules apply or do not apply
 
+## Definitions
+- Stock grant: IRS language generally treats equity awards as “property transferred in connection with the performance of services” (IRC §83). For Washday, a stock grant is an employer equity award that results in shares becoming the employee’s property at a specific event date. These events are treated as acquisitions for wash-sale timing.
+- Grant event types (MVP): RSU vest/settlement dates, ESPP purchase dates, and stock option exercise dates. Vesting schedules are captured as date series only (no quantities or prices for MVP).
+
 ## MVP Scope
 - Add labelled dividend and grant dates to a calendar
 - Display wash-sale windows on the calendar
@@ -27,11 +31,14 @@ Employees who receive equity grants and dividends and want to understand potenti
 - Data sources to be determined
 
 ## Rules And Assumptions
-- U.S. wash-sale rules are the initial target unless otherwise specified
+- U.S. IRS wash-sale rules are the initial target unless otherwise specified
 - Grants and dividends are modeled as user-entered events used to compute risk windows
 - The product provides informational visualization only, not tax advice
 
-## Open Questions
-- Which wash-sale rule interpretations will be supported and how will they be explained to users?
-- What calendar UI best communicates the risk windows?
-- What initial tickers and data input formats should be supported?
+## IRS References
+- IRS Publication 550 (Investment Income and Expenses), wash-sale guidance
+- Internal Revenue Code §83, property transferred in connection with performance of services
+
+## External References
+- https://www.irs.gov/publications/p550
+- https://www.irs.gov/irb/2007-31_IRB
