@@ -23,7 +23,7 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 3. Adjust timing plans based on the visualized windows.
 
 ## Success Metrics
-- Investor can quickly enter grant dates and schedules.  See risk windows.
+- Investor can quickly enter symbol, grant date(s) and vesting schedules.  See quickly see tax risk windows.
 - Investor can visually identify upcoming wash-sale risk windows for the next 90 days within sixty.
 
 ## Definitions
