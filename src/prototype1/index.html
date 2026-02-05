@@ -88,9 +88,10 @@
           </div>
 
           <div class="legend">
-            <span class="legend-item"><span class="dot event"></span> Event</span>
-            <span class="legend-item"><span class="dot risk"></span> Wash-sale window</span>
-            <span class="legend-item"><span class="dot overlap"></span> Overlapping windows</span>
+            <span class="legend-item" data-tooltip="Event date: an acquisition or dividend occurs on this day. This is the anchor for pre- and post-event warning windows."><span class="dot event"></span> Event</span>
+            <span class="legend-item" data-tooltip="Pre-event warning: selling at a loss during this window could be disallowed if you acquire the same security soon after."><span class="dot warning-pre"></span> Pre-event warning</span>
+            <span class="legend-item" data-tooltip="Post-event warning: selling at a loss during this window could be disallowed because of a recent acquisition."><span class="dot warning-post"></span> Post-event warning</span>
+            <span class="legend-item" data-tooltip="Overlapping windows: multiple pre/post windows stack on the same day, increasing the chance a loss sale could be affected."><span class="dot overlap"></span> Overlapping windows</span>
           </div>
 
           <div class="grid" id="calendarGrid" aria-label="Calendar"></div>

@@ -148,7 +148,7 @@ function deleteEvent(id) {
   renderCalendar();
 }
 
-function getEventOccurrences(event, currentDate) {
+function getEventOccurrences(event, horizonDate) {
   if (event.kind === "div") {
     return [event.date];
   }
@@ -156,7 +156,7 @@ function getEventOccurrences(event, currentDate) {
     return [event.date];
   }
   const startDate = toDate(event.date);
-  return scheduleGenerators[event.schedule](startDate, currentDate);
+  return scheduleGenerators[event.schedule](startDate, horizonDate);
 }
 
 function renderTickers() {
@@ -335,25 +335,29 @@ function renderInlineEditor(id) {
   });
 }
 
-function buildRiskMap() {
-  const riskMap = new Map();
-  const currentDate = new Date();
+function buildWarningMaps(horizonDate) {
+  const preMap = new Map();
+  const postMap = new Map();
   state.events.forEach((event) => {
-    const occurrences = getEventOccurrences(event, currentDate);
+    const occurrences = getEventOccurrences(event, horizonDate);
     occurrences.forEach((occurrence) => {
       const base = toDate(occurrence);
-      const start = new Date(base);
-      start.setDate(start.getDate() - 30);
-      const end = new Date(base);
-      end.setDate(end.getDate() + 30);
+      const preStart = new Date(base);
+      preStart.setDate(preStart.getDate() - 30);
+      const postEnd = new Date(base);
+      postEnd.setDate(postEnd.getDate() + 30);
 
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      for (let d = new Date(preStart); d < base; d.setDate(d.getDate() + 1)) {
         const key = formatDate(d);
-        riskMap.set(key, (riskMap.get(key) || 0) + 1);
+        preMap.set(key, (preMap.get(key) || 0) + 1);
+      }
+      for (let d = new Date(base); d <= postEnd; d.setDate(d.getDate() + 1)) {
+        const key = formatDate(d);
+        postMap.set(key, (postMap.get(key) || 0) + 1);
       }
     });
   });
-  return riskMap;
+  return { preMap, postMap };
 }
 
 function renderCalendar() {
@@ -361,11 +365,16 @@ function renderCalendar() {
   const month = new Date(state.month.getFullYear(), state.month.getMonth(), 1);
   const monthStart = new Date(month);
   const monthEnd = new Date(month.getFullYear(), month.getMonth() + 1, 0);
-  const riskMap = buildRiskMap();
-  const currentDate = new Date();
+  const startOffset = monthStart.getDay();
+  const daysInView = 42;
+  const gridStart = new Date(monthStart);
+  gridStart.setDate(gridStart.getDate() - startOffset);
+  const gridEnd = new Date(gridStart);
+  gridEnd.setDate(gridEnd.getDate() + daysInView - 1);
+  const { preMap, postMap } = buildWarningMaps(gridEnd);
   const occurrenceMap = new Map();
   state.events.forEach((event) => {
-    const occurrences = getEventOccurrences(event, currentDate);
+    const occurrences = getEventOccurrences(event, gridEnd);
     occurrences.forEach((date) => {
       if (!occurrenceMap.has(date)) {
         occurrenceMap.set(date, []);
@@ -386,14 +395,9 @@ function renderCalendar() {
     calendarGrid.appendChild(cell);
   });
 
-  const startOffset = monthStart.getDay();
-  const daysInView = 42;
-  const startDate = new Date(monthStart);
-  startDate.setDate(startDate.getDate() - startOffset);
-
   for (let i = 0; i < daysInView; i += 1) {
-    const current = new Date(startDate);
-    current.setDate(startDate.getDate() + i);
+    const current = new Date(gridStart);
+    current.setDate(gridStart.getDate() + i);
     const key = formatDate(current);
     const cell = document.createElement("div");
     cell.className = "day";
@@ -403,11 +407,15 @@ function renderCalendar() {
       cell.classList.add("muted");
     }
 
-    const riskCount = riskMap.get(key) || 0;
-    if (riskCount > 0) {
-      cell.classList.add("risk");
+    const preCount = preMap.get(key) || 0;
+    const postCount = postMap.get(key) || 0;
+    if (preCount > 0) {
+      cell.classList.add("warning-pre");
     }
-    if (riskCount > 1) {
+    if (postCount > 0) {
+      cell.classList.add("warning-post");
+    }
+    if (preCount + postCount > 1) {
       cell.classList.add("overlap");
     }
 
