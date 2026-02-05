@@ -1,24 +1,25 @@
 # UX Decisions
 
 ## Goals
-- Make wash-sale windows understandable at a glance
+- Make loss-sale warning windows understandable at a glance
 - Keep data entry lightweight for MVP
 - Prioritize clarity over tax complexity
 
 ## Key Decisions
 - Single-page layout with form panel + calendar panel
 - Neutral labels: “Acquisition event” with subtype tags
-- Vesting schedules are selected from a small, named list
+- Schedules are selected from a small, named list (including one-time)
 - Inline edit/delete for event management
-- Calendar is the primary visualization, with risk windows highlighted
-- Overlapping risk windows use a filled highlight
+- Calendar is the primary visualization, with pre/post warning windows highlighted
+- Overlapping windows use a filled highlight
 - Events are labeled with ticker symbols in the calendar
 - Local storage is used for persistence (no login)
 - Simple disclaimer in the footer
+- Legend tooltips explain pre/post/overlap ramifications
 
 ## Visual Language
-- High-contrast dark theme with clear risk outlines
-- Risk window outlines are thicker for visibility
+- High-contrast dark theme with clear warning outlines
+- Pre/post windows use distinct colors
 - Overlap windows use filled color to signal higher density
 
 ## Open UX Questions

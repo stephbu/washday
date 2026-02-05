@@ -15,28 +15,27 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 ## User Goals
 - Add and store stock tickers
 - Add and label grant dates and dividend dates
-- Visualize windows where wash-sale rules apply or do not apply
-- Define multiple vesting schedules per ticker with named schedule types
+- Visualize loss-sale warning windows around acquisition/dividend events
+- Define multiple named schedules per ticker
 
 ## User Journey
-1. Starts with a blank calendar and "add grant symbol"
-2. Investor picks symbol, and schedule, it fills in dividends.
-3. View the calendar with highlighted risk windows and plain-language labels.
-4. Adjust timing plans based on the visualized windows.
+1. Add a ticker and acquisition/dividend events (with an optional schedule).
+2. View the calendar with highlighted warning windows and plain-language labels.
+3. Adjust timing plans based on the visualized windows.
 
 ## Success Metrics
-- Investor can quickly enter symbol, grant date(s) and vesting schedules.  See quickly see tax risk windows.
-- Investor can visually identify upcoming wash-sale risk windows for the next 90 days within sixty.
+- A user can enter a ticker, events, and schedules in under two minutes.
+- A user can visually identify upcoming warning windows for the next 90 days.
 
 ## Definitions
 - Stock grant: IRS language generally treats equity awards as “property transferred in connection with the performance of services” (IRC §83). For Washday, a stock grant is an employer equity award that results in shares becoming the employee’s property at a specific event date. These events are treated as acquisitions for wash-sale timing.
-- Grant event types (MVP): RSU vest/settlement dates, ESPP purchase dates, and stock option exercise dates. Vesting schedules are captured as date series only (no quantities or prices for MVP).
-- Vesting schedule: A named series of acquisition dates attached to a ticker (e.g., “1yr cliff + quarterly vest”).
-  Example schedules: “1yr cliff + quarterly vest”, “4yr monthly vest”, “2yr cliff + annual vest”.
+- Grant event types (MVP): RSU vest/settlement dates, ESPP purchase dates, and stock option exercise dates. Schedules are captured as date series only (no quantities or prices for MVP).
+- Schedule: A named series of acquisition dates attached to a ticker.
+  Examples: “one-time event”, “1yr cliff + quarterly vest”, “quarterly vest”, “4yr monthly vest”, “2yr cliff + annual vest”.
 
 ## MVP Scope
 - Add labelled dividend and grant dates to a calendar
-- Display wash-sale windows on the calendar
+- Display loss-sale warning windows on the calendar
 
 ## Out of Scope (For MVP)
 - External data integrations for grants or dividends
@@ -48,7 +47,6 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 ## Constraints
 - Privacy first
 - Data sources to be determined
-  - Alpha Vantage to source Dividend Events?
 
 ## Monetization
 - Ad-funded model (TBD: ad placement and privacy constraints)
@@ -57,6 +55,7 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 - U.S. IRS wash-sale rules are the initial target unless otherwise specified
 - Grants and dividends are modeled as user-entered events used to compute risk windows
 - The product provides informational visualization only, not tax advice
+- Warning windows are shown as pre-event and post-event days
 
 ## IRS References
 - IRS Publication 550 (Investment Income and Expenses), wash-sale guidance
@@ -65,4 +64,3 @@ An employee with recurring RSU vests and periodic dividends who wants to plan tr
 ## External References
 - IRS Publication 550 https://www.irs.gov/publications/p550
 - IRS Code https://www.irs.gov/irb/2007-31_IRB
-- Alpha Vantage API https://www.alphavantage.co/documentation/
